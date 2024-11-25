@@ -1,59 +1,111 @@
-.TH PRINTF 3 "October 2023" "1.0" "Library Functions"
-.SH NAME
-_printf \- formatted output conversion
-.SH SYNOPSIS
-.B #include <stdio.h>
-.PP
-.B int _printf(const char *format, ...);
-.SH DESCRIPTION
-The \fB_printf\fR function sends formatted output to the standard output (stdout). It produces output according to a format string that specifies how subsequent arguments (if any) are converted for output.
+.\" Modified from man(1) of FreeBSD, the NetBSD mdoc.template, and mdoc.samples.
+.\" See Also:
+.\" man mdoc.samples for a complete listing of options
+.\" man mdoc for the short list of editing options
+.\" /usr/share/misc/mdoc.template
+.Dd 26/7/24
+.Dt _PRINTF 3 "1.0" "Library Functions"
+.Os Ubuntu
+.Sh NAME
+.Nm _printf
+.Nd simple print formatted output as come as the function printf.
+.Sh SYNOPSIS
+.Nm
+.Op Fl c
+.Op Fl s
+.Op Fl d
+.Op Fl i
+.Op Fl %
+.Op Ar format
+.Op Ar ... 
+.Sh DESCRIPTION
+The \fB_printf\fR function produces formatted output to stdout (the standard output stream). It processes a format string and writes the output according to the specified format. The function returns the number of characters printed, excluding the null byte used to end output to strings.
 
-The format string can contain:
-.TP
-.B %c
-for a character.
-.TP
-.B %s
-for a string.
-.TP
-.B %d
-for signed decimal integers.
-.TP
-.B %i
-for signed integers.
-.TP
-.B %%
-to print a literal percent sign.
+.Pp
+The format string is a character string that contains zero or more directives. Each directive starts with a percent sign (\%) and is followed by a conversion character. The function supports the following conversion specifiers:
 
-.SH RETURN VALUE
-The \fB_printf\fR function returns the total number of characters written, or a negative number if an output error occurs.
+.Bl -tag -width -indent
+.It %c 
+Prints a single character. The corresponding argument should be of type \fCchar\fR.
+.It %s 
+Prints a string. The corresponding argument should be of type \fCchar *\fR. The string is printed until the null terminator is encountered.
+.It %d 
+Prints an integer in decimal notation. The corresponding argument should be of type \fCint\fR.
+.It %i 
+Prints an integer in decimal notation. It behaves the same as \fB%d\fR.
+.It %%
+Prints a percent sign (\%). No argument is required for this specifier.
+.El
+.Pp
+The \fB_printf\fR function does not handle flag characters, field width, precision, or length modifiers. It does not reproduce the buffer handling of the C library `printf` function.
 
-.SH EXAMPLES
-.PP
+.Sh RETURN VALUE
+The \fB_printf\fR function returns the total number of characters printed, excluding the null byte used to end output to strings. In case of an error, it returns a negative number.
+
+.Sh EXAMPLES
+.Pp
 The following example demonstrates the use of \fB_printf\fR:
-.PP
-.B #include <stdio.h>
-.PP
-.B int main() {
-    _printf("Hello, World!\n");
-    _printf("Character: %c\n", 'A');
-    _printf("String: %s\n", "Hello");
-    _printf("Integer: %d\n", -123);
-    return 0;
+.Pp
+ 
+.br
+.SAMPLE
+.Pp
+int main(void)
+.Pp
+{
+.Pp
+
+    int len;
+.br
+.br
+.pp
+.RS4
+    _printf("Character: %c\\n", 'A');
+
+.Pp
+.RS4
+    _printf("String: %s\\n", "Hello, World!");
+.Pp
+.RS4
+    _printf("Integer: %d\\n", 123);
+
+.Pp
+.RS4
+    _printf("Percent sign: %%\\n");
+.Pp
+.RS4
+    len = _printf("Length of this string: %d\\n", len);
+.Pp
+ 
+.Pp
+.br
+.RS4
+    return (0);
+
+.Pp
 }
-.SH ERRORS
-The \fB_printf \fR function may fail and set errno if:
-.TP
-.B EINVAL
-The format string is invalid.
-.TP
-.B EIO
-An I/O error occurs.
+.br
+.ESAMPLE
+.br
+.Pp
 
-.SH SEE ALSO
-.BR sprintf (3),
-.BR fprintf (3),
-.BR snprintf (3)
+ 
+.Pp
+In this example:
+.Bl -bullet -compact
+.It
+\fB_printf("Character: %c\\n", 'A')\fR print: Character: [A]
+.It
+\fB_printf("String: %s\\n", "Hello, World!")\fR prints: [String: Hello, World!]
+.It
+\fB_printf("Integer: %d\\n", 123)\fR prints: Integer: [123]
+.It
+\fB_printf("Percent sign: %%\\n")\fR print: Percent sign: [%]
+.El
+.Sh SEE ALSO
+.Xr printf 3
+.Pp
+For additional details on format specifiers and usage, refer to the \fBprintf(3)\fR manual page.
 
-.SH AUTHOR
-Written by [batrivieredev] <baptiste.rivierefr@gmail.com>
+.Sh AUTHOR
+Baptiste RIVIERE
