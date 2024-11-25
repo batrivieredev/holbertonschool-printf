@@ -1,42 +1,111 @@
-.TH _PRINTF 3 "November 2024" "1.0" "Custom Printf Function"
-.SH NAME
-_printf \- custom formatted output conversion
+.\" Modified from man(1) of FreeBSD, the NetBSD mdoc.template, and mdoc.samples.
+.\" See Also:
+.\" man mdoc.samples for a complete listing of options
+.\" man mdoc for the short list of editing options
+.\" /usr/share/misc/mdoc.template
+.Dd 26/7/24
+.Dt _PRINTF 3 "1.0" "Library Functions"
+.Os Ubuntu
+.Sh NAME
+.Nm _printf
+.Nd simple print formatted output as come as the function printf.
+.Sh SYNOPSIS
+.Nm
+.Op Fl c
+.Op Fl s
+.Op Fl d
+.Op Fl i
+.Op Fl %
+.Op Ar format
+.Op Ar ...
+.Sh DESCRIPTION
+The \fB_printf\fR function produces formatted output to stdout (the standard output stream). It processes a format string and writes the output according to the specified format. The function returns the number of characters printed, excluding the null byte used to end output to strings.
 
-.SH SYNOPSIS
-.B #include <stdarg.h>
-.BI "int _printf(const char *" format ", ...);"
+.Pp
+The format string is a character string that contains zero or more directives. Each directive starts with a percent sign (\%) and is followed by a conversion character. The function supports the following conversion specifiers:
 
-.SH DESCRIPTION
-.B _printf
-is a custom implementation of the standard printf function. It produces output according to a format as described below. The function writes its output to stdout.
+.Bl -tag -width -indent
+.It %c
+Prints a single character. The corresponding argument should be of type \fCchar\fR.
+.It %s
+Prints a string. The corresponding argument should be of type \fCchar *\fR. The string is printed until the null terminator is encountered.
+.It %d
+Prints an integer in decimal notation. The corresponding argument should be of type \fCint\fR.
+.It %i
+Prints an integer in decimal notation. It behaves the same as \fB%d\fR.
+.It %%
+Prints a percent sign (\%). No argument is required for this specifier.
+.El
+.Pp
+The \fB_printf\fR function does not handle flag characters, field width, precision, or length modifiers. It does not reproduce the buffer handling of the C library `printf` function.
 
-.PP
-The
-.I format
-string is a character string, beginning and ending in its initial shift state, if any. The format string is composed of zero or more directives: ordinary characters (except %), which are copied unchanged to the output stream; and conversion specifications, each of which results in fetching zero or more subsequent arguments. Each conversion specification is introduced by the character %, and ends with a conversion specifier. The arguments must correspond properly (after type promotion) with the conversion specifier.
+.Sh RETURN VALUE
+The \fB_printf\fR function returns the total number of characters printed, excluding the null byte used to end output to strings. In case of an error, it returns a negative number.
 
-.SH PARAMETERS
-.TP
-.I format
-The format string containing the text to be written to stdout. It can include format specifiers that will be replaced by the values of additional arguments.
+.Sh EXAMPLES
+.Pp
+The following example demonstrates the use of \fB_printf\fR:
+.Pp
 
-.SH RETURN VALUE
-The function returns the number of characters printed (excluding the null byte used to end output to strings). If an output error is encountered, a negative value is returned.
-
-.SH EXAMPLES
-.B Example usage:
-.nf
-#include <stdio.h>
-
+.br
+.SAMPLE
+.Pp
 int main(void)
+.Pp
 {
-    _printf("Hello, %s!\n", "world");
-    return 0;
+.Pp
+
+    int len;
+.br
+.br
+.pp
+.RS4
+    _printf("Character: %c\\n", 'A');
+
+.Pp
+.RS4
+    _printf("String: %s\\n", "Hello, World!");
+.Pp
+.RS4
+    _printf("Integer: %d\\n", 123);
+
+.Pp
+.RS4
+    _printf("Percent sign: %%\\n");
+.Pp
+.RS4
+    len = _printf("Length of this string: %d\\n", len);
+.Pp
+
+.Pp
+.br
+.RS4
+    return (0);
+
+.Pp
 }
-.fi
+.br
+.ESAMPLE
+.br
+.Pp
 
-.SH SEE ALSO
-.BR printf (3)
 
-.SH AUTHOR
-Written by [batrivieredev].
+.Pp
+In this example:
+.Bl -bullet -compact
+.It
+\fB_printf("Character: %c\\n", 'A')\fR print: Character: [A]
+.It
+\fB_printf("String: %s\\n", "Hello, World!")\fR prints: [String: Hello, World!]
+.It
+\fB_printf("Integer: %d\\n", 123)\fR prints: Integer: [123]
+.It
+\fB_printf("Percent sign: %%\\n")\fR print: Percent sign: [%]
+.El
+.Sh SEE ALSO
+.Xr printf 3
+.Pp
+For additional details on format specifiers and usage, refer to the \fBprintf(3)\fR manual page.
+
+.Sh AUTHOR
+Stephane Dinahet and Louis Beaumois
