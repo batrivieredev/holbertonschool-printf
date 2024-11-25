@@ -1,0 +1,56 @@
+.TH _PRINTF 3 "July 2024" "version 1.0" "_PRINTF MANUAL"
+.SH NAME
+_printf \- Print formatted output
+.SH SYNOPSIS
+.B _printf
+.IR format
+.RI [ args... ]
+.SH DESCRIPTION
+.B _printf
+formats and prints its arguments under control of the
+.IR format .
+The format string is composed of zero or more directives: ordinary characters (not %), which are copied unchanged to the output stream; and conversion specifications, each of which results in fetching zero or more subsequent arguments. Each conversion specification is introduced by the character % and ends with a conversion specifier.
+
+.SH OPTIONS
+.TP
+.B %c
+Prints a single character.
+.TP
+.B %s
+Prints a string.
+.TP
+.B %d, %i
+Prints an integer in base 10.
+.TP
+.B %u
+Prints an unsigned integer in base 10.
+.TP
+.B %o
+Prints an unsigned integer in base 8 (octal).
+.TP
+.B %x, %X
+Prints an unsigned integer in base 16 (hexadecimal).
+.TP
+.B %f
+Prints a floating-point number.
+.TP
+.B %e, %E
+Prints a number in scientific notation.
+.TP
+.B %g, %G
+Prints a number in either normal or scientific notation, whichever is more compact.
+
+.SH EXAMPLES
+.nf
+.B _printf("Hello, %s!\\n", "world");
+Prints "Hello, world!" followed by a newline.
+.B _printf("Value: %d\\n", 42);
+Prints "Value: 42" followed by a newline.
+.fi
+
+.SH SEE ALSO
+.BR printf (3),
+.BR fprintf (3),
+.BR sprintf (3)
+.SH AUTHOR
+Written by Dinahet Stephane and Beaumois Louis.
