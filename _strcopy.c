@@ -10,17 +10,17 @@
  */
 char *_strcopy(const char *src)
 {
-    char *dest;
-    size_t len;
+char *dest;
+size_t len;
 
-    if (src == NULL)
-        return (NULL);
+if (src == NULL)
+return (NULL);
 
-    len = _strlen(src) + 1; /* +1 for the null terminator */
-    dest = malloc(len);
-    if (dest == NULL)
-        return (NULL);
+len = _strlen(src) + 1; /* +1 for the null terminator */
+dest = malloc(len);
+if (dest == NULL)
+return (NULL);
 
-    memcpy(dest, src, len);
-    return (dest);
+memcpy(dest, src, len);
+return (dest);
 }

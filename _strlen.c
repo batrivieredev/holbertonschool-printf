@@ -9,15 +9,16 @@
  */
 size_t _strlen(const char *s)
 {
-    size_t length = 0;
+size_t length = 0;
 
-    if (s == NULL)
-        return (0);
+if (s == NULL)
+return (0);
 
-    while (*s != '\0') {
-        length++;
-        s++;
-    }
+while (*s != '\0')
+{
+length++;
+s++;
+}
 
-    return (length);
+return (length);
 }
