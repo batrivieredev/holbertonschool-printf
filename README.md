@@ -18,7 +18,7 @@ The `printf` function is a standard library function in C that sends formatted o
 To use the custom `printf` function, include the header file in your source code:
 
 ```c
-#include "holberton.h"
+#include "main.h"
 ```
 
 Compile the code with the provided `printf` implementation:
