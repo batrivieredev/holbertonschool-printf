@@ -13,8 +13,8 @@
  */
 typedef struct ptr
 {
-	char *c;
-	int (*f)(char *, int, va_list);
+char *c;
+int (*f)(char *, int, va_list);
 } ptr_ch;
 
 
