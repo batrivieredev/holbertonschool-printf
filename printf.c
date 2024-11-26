@@ -1,7 +1,6 @@
 #include <unistd.h>
 #include <stdarg.h>
 #include <stdio.h>
-#include "main.h"
 #include <stdint.h>
 
 /**
@@ -12,7 +11,7 @@
  */
 int _putchar(char c)
 {
-	return write(1, &c, 1); /*Write the character to stdout*/
+	return write(1, &c, 1); /* Write the character to stdout */
 }
 
 /**
@@ -26,41 +25,41 @@ int _putchar(char c)
  */
 int spe(const char *format, unsigned int *i, va_list args, int *printed_chars)
 {
-	int count = 0; /*To count characters printed by this function*/
+	int count = 0; /* To count characters printed by this function */
 
 	switch (format[*i])
 	{
 	case 'c':
-	{									  /*Character*/
-		char c = (char)va_arg(args, int); /*Get the character argument*/
-		count += _putchar(c);			  /*Print and count the character*/
+	{									  /* Character */
+		char c = (char)va_arg(args, int); /* Get the character argument */
+		count += _putchar(c);			  /* Print and count the character */
 		break;
 	}
 	case 's':
-	{									/*String*/
-		char *s = va_arg(args, char *); /*Get the string argument*/
+	{									/* String */
+		char *s = va_arg(args, char *); /* Get the string argument */
 		if (s == NULL)
-		{ /*Handle NULL string*/
+		{ /* Handle NULL string */
 			s = "(null)";
 		}
 		while (*s)
-		{ /*Print each character of the string*/
+		{ /* Print each character of the string */
 			count += _putchar(*s);
 			s++;
 		}
 		break;
 	}
-	case '%':					/*Percent sign*/
-		count += _putchar('%'); /*Print percent sign*/
+	case '%':					/* Percent sign */
+		count += _putchar('%'); /* Print percent sign */
 		break;
-	default:						   /*Invalid format specifier*/
-		count += _putchar('%');		   /*Print the '%' character*/
-		count += _putchar(format[*i]); /*Print the invalid specifier*/
+	default:						   /* Invalid format specifier */
+		count += _putchar('%');		   /* Print the '%' character */
+		count += _putchar(format[*i]); /* Print the invalid specifier */
 		break;
 	}
 
-	*i += 1;	/* Move to the next character after the specifier*/
-	return count; /*Return the count of characters printed*/
+	(*i)++;		  /* Move to the next character after the specifier */
+	return count; /* Return the count of characters printed */
 }
 
 /**
