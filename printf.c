@@ -1,110 +1,66 @@
-#include <unistd.h>
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdint.h>
+#include "main.h"
+
+void print_buffer(char buffer[], int *buff_ind);
 
 /**
- * _putchar - writes a character to stdout
- * @c: The character to print
- *
- * Return: On success 1, on error -1.
- */
-int _putchar(char c)
-{
-	return write(1, &c, 1); /* Write the character to stdout */
-}
-
-/**
- * spe - processes format specifiers and prints accordingly
- * @format: the format string
- * @i: pointer to the current index in the format string
- * @args: the variable argument list
- * @printed_chars: pointer to the count of printed characters
- *
- * Return: the number of characters printed by this function
- */
-int spe(const char *format, unsigned int *i, va_list args, int *printed_chars)
-{
-	int count = 0; /* To count characters printed by this function */
-
-	switch (format[*i])
-	{
-	case 'c':
-	{									  /* Character */
-		char c = (char)va_arg(args, int); /* Get the character argument */
-		count += _putchar(c);			  /* Print and count the character */
-		break;
-	}
-	case 's':
-	{									/* String */
-		char *s = va_arg(args, char *); /* Get the string argument */
-		if (s == NULL)
-		{ /* Handle NULL string */
-			s = "(null)";
-		}
-		while (*s)
-		{ /* Print each character of the string */
-			count += _putchar(*s);
-			s++;
-		}
-		break;
-	}
-	case '%':					/* Percent sign */
-		count += _putchar('%'); /* Print percent sign */
-		break;
-	default:						   /* Invalid format specifier */
-		count += _putchar('%');		   /* Print the '%' character */
-		count += _putchar(format[*i]); /* Print the invalid specifier */
-		break;
-	}
-
-	(*i)++;		  /* Move to the next character after the specifier */
-	return count; /* Return the count of characters printed */
-}
-
-/**
- * _printf - a simple version of the printf function
- * @format: the format string containing the text to be written to stdout
- *
- * Return: the number of characters printed
- * (excluding the null byte used to end output to strings)
+ * _printf - Printf function
+ * @format: format.
+ * Return: Printed chars.
  */
 int _printf(const char *format, ...)
 {
-	va_list args;
-	unsigned int i = 0;
-	int printed_chars = 0;
+	int i, printed = 0, printed_chars = 0;
+	int flags, width, precision, size, buff_ind = 0;
+	va_list list;
+	char buffer[BUFF_SIZE];
 
-	if (format == NULL) /* check if format is NULL */
+	if (format == NULL)
 		return (-1);
 
-	va_start(args, format); /* initialize the argument list */
+	va_start(list, format);
 
-	while (format[i]) /* iterate through the format string */
+	for (i = 0; format && format[i] != '\0'; i++)
 	{
-		if (format[i] == '%')
+		if (format[i] != '%')
 		{
-			i++; /* move to the next character */
-			printed_chars += spe(format, &i, args, &printed_chars);
+			buffer[buff_ind++] = format[i];
+			if (buff_ind == BUFF_SIZE)
+				print_buffer(buffer, &buff_ind);
+			/* write(1, &format[i], 1);*/
+			printed_chars++;
 		}
 		else
 		{
-			/* prints formatted output and counts characters. */
-			printed_chars += _putchar(format[i]);
+			print_buffer(buffer, &buff_ind);
+			flags = get_flags(format, &i);
+			width = get_width(format, &i, list);
+			precision = get_precision(format, &i, list);
+			size = get_size(format, &i);
+			++i;
+			printed = handle_print(format, &i, list, buffer,
+				flags, width, precision, size);
+			if (printed == -1)
+				return (-1);
+			printed_chars += printed;
 		}
-		i++;
 	}
 
-	va_end(args);			/* end using the argument list */
-	return (printed_chars); /* return the number of characters printed */
+	print_buffer(buffer, &buff_ind);
+
+	va_end(list);
+
+	return (printed_chars);
 }
 
-int main()
+/**
+ * print_buffer - Prints the contents of the buffer if it exist
+ * @buffer: Array of chars
+ * @buff_ind: Index at which to add next char, represents the length.
+ */
+void print_buffer(char buffer[], int *buff_ind)
 {
-	int printed_chars;
+	if (*buff_ind > 0)
+		write(1, &buffer[0], *buff_ind);
 
-	printed_chars = _printf("Hello %s! You have %c new messages. %%\n", "Alice", '5');
-	printf("Printed characters: %d\n", printed_chars);
-
-	return 0;
+	*buff_ind = 0;
 }
