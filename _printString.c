@@ -12,30 +12,30 @@
  */
 int _printString(va_list args)
 {
-	char *str;
-	char *copied_str;
-	int count = 0;
+char *str;
+char *copied_str;
+int count = 0;
 
 
-	str = va_arg(args, char *);
+str = va_arg(args, char *);
 
 
-	if (str == NULL)
-		str = "(null)";
+if (str == NULL)
+str = "(null)";
 
-	/* Copy the string */
-	copied_str = _strcopy(str);
-	if (copied_str == NULL)
-		return 0;
+/* Copy the string */
+copied_str = _strcopy(str);
+if (copied_str == NULL)
+return 0;
 
-	while (*copied_str)
-	{
-		_putchar(*copied_str);
-		count++;
-		copied_str++;
-	}
+while (*copied_str)
+{
+_putchar(*copied_str);
+count++;
+copied_str++;
+}
 
-	free(copied_str - count);
+free(copied_str - count);
 
-	return count;
+return count;
 }
