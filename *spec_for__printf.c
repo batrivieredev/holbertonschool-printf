@@ -46,7 +46,7 @@ int spe(const char *format, unsigned int *i, va_list args, int *printed_chars)
 	}
 	*printed_chars += _putchar('%');  /*NULL _putchar % ->not in specifier*/
 	if (format[*i]) /*if not NULL _putchar format specifier*/
-		printed_chars += _putchar(format[*i]); /*print the next caracter*/
-	
+		*printed_chars += _putchar(format[*i]); /*print the next caracter*/
+
 	return (*printed_chars);
 }
