@@ -1,42 +1,79 @@
-#include <unistd.h>
 #include <stdarg.h>
-#include <stdio.h>
-#include "main.h"
-#include <stdint.h>
+#include <unistd.h>
 
 /**
- * _printf - A simple version of the printf function
- * @format: the format string containing the text to be written to stdout
+ * _putchar - Writes a single character to stdout
+ * @c: The character to print
  *
- * Return: the number of characters printed
- * (excluding the null byte used to end output to strings)
+ * Return: On success, the number of characters written (1).
+ * On error, -1 is returned, and errno is set appropriately.
+ */
+int _putchar(char c)
+{
+	return (write(1, &c, 1));
+}
+
+/**
+ * _puts - Writes a string to stdout
+ * @str: The string to print
+ *
+ * Return: The number of characters written.
+ */
+int _puts(char *str)
+{
+	int i = 0;
+
+	while (str[i])
+	{
+		_putchar(str[i]);
+		i++;
+	}
+	return (i);
+}
+
+/**
+ * _printf - Produces output according to a format
+ * @format: The format string containing the characters and the specifiers
+ *
+ * Return: The number of characters printed (excluding the null byte
+ * used to end output to strings)
  */
 int _printf(const char *format, ...)
 {
-va_list args;
-unsigned int i = 0;
-int printed_chars = 0;
+	va_list args;
+	int i = 0, printed_chars = 0;
 
-if (!format) /* Check if the format string is NULL */
-return (-1);
+	va_start(args, format);
 
-va_start(args, format); /* Initialize the argument list */
+	while (format && format[i])
+	{
+		if (format[i] == '%')
+		{
+			i++;
+			switch (format[i])
+			{
+			case 'c':
+				printed_chars += _putchar(va_arg(args, int));
+				break;
+			case 's':
+				printed_chars += _puts(va_arg(args, char *));
+				break;
+			case '%':
+				printed_chars += _putchar('%');
+				break;
+			default:
+				printed_chars += _putchar('%');
+				printed_chars += _putchar(format[i]);
+				break;
+			}
+		}
+		else
+		{
+			printed_chars += _putchar(format[i]);
+		}
+		i++;
+	}
 
-while (format[i] != '\0') /* Loop through the format string */
-{
-if (format[i] == '%')  /* Handle format specifier */
-{
-i++;  /* Skip '%' and move to next character */
-printed_chars = spe(format, &i, args, &printed_chars);
-}
-else
-{
-/* Print normal character and increment printed_chars */
-printed_chars += _putchar(format[i]);
-}
-i++;
-}
-
-va_end(args); /* End using the argument list */
-return (printed_chars); /* Return the total number of printed characters */
+	va_end(args);
+	return (printed_chars);
 }
