@@ -1,79 +1,71 @@
+#include <stdio.h>
 #include <stdarg.h>
-#include <unistd.h>
 
-/**
- * _putchar - Writes a single character to stdout
- * @c: The character to print
- *
- * Return: On success, the number of characters written (1).
- * On error, -1 is returned, and errno is set appropriately.
- */
-int _putchar(char c)
-{
-	return (write(1, &c, 1));
-}
-
-/**
- * _puts - Writes a string to stdout
- * @str: The string to print
- *
- * Return: The number of characters written.
- */
-int _puts(char *str)
-{
-	int i = 0;
-
-	while (str[i])
-	{
-		_putchar(str[i]);
-		i++;
-	}
-	return (i);
-}
-
-/**
- * _printf - Produces output according to a format
- * @format: The format string containing the characters and the specifiers
- *
- * Return: The number of characters printed (excluding the null byte
- * used to end output to strings)
- */
 int _printf(const char *format, ...)
 {
-	va_list args;
-	int i = 0, printed_chars = 0;
+	int count = 0; // To count the number of characters printed
+	va_list args;  // To handle the variable arguments
 
-	va_start(args, format);
+	va_start(args, format); // Initialize the argument list
 
-	while (format && format[i])
+	for (const char *p = format; *p != '\0'; p++)
 	{
-		if (format[i] == '%')
-		{
-			i++;
-			switch (format[i])
+		if (*p == '%')
+		{		 // Check for format specifier
+			p++; // Move to the next character
+			switch (*p)
 			{
 			case 'c':
-				printed_chars += _putchar(va_arg(args, int));
+			{									  // Character
+				char c = (char)va_arg(args, int); // Get the character argument
+				putchar(c);						  // Print the character
+				count++;						  // Increment count
 				break;
+			}
 			case 's':
-				printed_chars += _puts(va_arg(args, char *));
+			{									// String
+				char *s = va_arg(args, char *); // Get the string argument
+				if (s == NULL)
+				{ // Handle NULL string
+					s = "(null)";
+				}
+				while (*s)
+				{ // Print each character of the string
+					putchar(*s);
+					s++;
+					count++; // Increment count
+				}
 				break;
-			case '%':
-				printed_chars += _putchar('%');
+			}
+			case '%':		  // Percent sign
+				putchar('%'); // Print percent sign
+				count++;	  // Increment count
 				break;
-			default:
-				printed_chars += _putchar('%');
-				printed_chars += _putchar(format[i]);
+			default:		  // Invalid format specifier
+				putchar('%'); // Print the '%' character
+				putchar(*p);  // Print the invalid specifier
+				count += 2;	  // Increment count by 2
 				break;
 			}
 		}
 		else
-		{
-			printed_chars += _putchar(format[i]);
+		{				 // Regular character
+			putchar(*p); // Print the character
+			count++;	 // Increment count
 		}
-		i++;
 	}
 
-	va_end(args);
-	return (printed_chars);
+	va_end(args); // Clean up the argument list
+
+	return count; // Return the total count of printed characters
+}
+
+int main()
+{
+	int printed_chars;
+
+	printed_chars = _printf("Hello %s! You have %c new messages. %%\n", "Alice", '5');
+	printf("Printed characters: %d\n", printed_chars);
+
+	return 0;
 }
