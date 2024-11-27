@@ -53,10 +53,8 @@ return (count);
 
 
 /**
-La fonction _printf est une implémentation personnalisée de la fonction
-standard printf. Elle parcourt la chaîne format pour traiter les spécificateurs
-de format, elle utilise une liste d'arguments variables pour gérer
-les arguments supplémentaires passés à la fonction, Elle copie les résultats
+elle utilise une liste d'arguments variables pour gérer les arguments
+supplémentaires passés à la fonction, Elle copie les résultats
 dans un tampon buff et les affiche avec write elle retourne le nombre
 total de caractères imprimés.
 Les spécificateurs de format sont associés à des fonctions de traitement
