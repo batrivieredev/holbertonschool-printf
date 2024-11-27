@@ -231,7 +231,7 @@ return (count);
 }
 
 
-/*
+/**
 
 Explication du code :
 
