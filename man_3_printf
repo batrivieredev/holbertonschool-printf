@@ -1,0 +1,101 @@
+.TH PRINTF 1 26/11/2024 Printf\ 0.1 Library\ Function\ Manual
+
+.SH NAME
+printf - format and print data - refaite avec erreurs
+
+.SH SYNOPSIS
+int _printf(const char *format, ...);
+
+.SH DESCRIPTION
+
+The _printf function is a simplified implementation of the standard C printf function. It displays a formatted string to standard output (usually the screen), by interpreting format specifiers in the supplied string. Format specifiers begin with a percent (%) and allow you to change how arguments are displayed (e.g., display integers, strings, characters, etc.).
+
+.SH OPTIONS
+
+A character that specifies the type of conversion to be applied.  The conversion specifiers and their meanings are:
+
+.B d, i
+.RS
+The  int  argument  is  converted to signed decimal notation and prints this.
+
+.RE
+.B o, u, x, X
+.RS
+The  unsigned  int argument is converted to unsigned octal (o), unsigned decimal (u), or unsigned hexadecimal (x and X) notation, "x" is to lowercase and "X" is to uppercase.
+
+.RE
+.B b
+.RS
+Prints a converted number to binary (base 2).
+
+.RE
+.B c
+.RS
+The int argument is converted to an unsigned char, and the resulting character is  written.
+
+.RE
+.B s
+.RS
+Prints a string assign it in parameter's position. If string does not exist prints "(null)" in the same position.
+
+.RE
+.B p
+.RS
+The void * pointer argument is printed in hexadecimal (0x + %lx), prints an address.
+
+.RE
+.B r
+.RS
+Prints a reversed string.
+
+.RE
+.B R
+.RS
+Converts a string to rot13 and prints this.
+
+.RE
+.B %
+.RS
+A '%' is written.  No argument is converted.  The complete conversion specification is '%%'.
+
+.SH RETURN VALUE
+
+Upon successful return, these functions return the number of characters printed (excluding the null  byte  used  to  end  output  to strings).
+
+.SH EXAMPLES
+
+To call the _printf() function the next code is required:
+
+#include "main.h"
+
+int main()
+.TP
+\r{
+.TP
+	_printf("string to print");
+.TP
+	return (0);
+.TP
+\r}
+
+.TP
+Here's an example of how does the parameters work in our _printf() function:
+.TP
+#include "main.h"
+.TP
+int main()
+.TP
+\r{
+.TP
+	_printf("il est: %i", 19h);
+.TP
+	return (0);
+.TP
+\r}
+.TP
+The output of this main function will be:
+.TP
+Il est : 19h
+
+.SH AUTHORS
+Baptiste RIVIERE - baptiste.rivierefr@gmail.com
